@@ -6,7 +6,7 @@ public class Carta {
     String nome;
     double altura;
     double comprimento;
-    float peso;
+    double peso;
     int viveuHa;
     boolean superTrunfo;
     
@@ -15,7 +15,7 @@ public class Carta {
         String nome,
         double altura,
         double comprimento,
-        float peso,
+        double peso,
         int viveuHa,
         boolean superTrunfo
     ){
