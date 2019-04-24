@@ -16,24 +16,17 @@ public class Jogo {
         // chama o metodo que adiciona as cartas ao ArrayList
         baralhoTotal = jogo.criaBaralho(baralhoTotal);
         
-        // chama o metodo que embaralha as cartas do baralho
-        baralhoTotal = jogo.embaralhaCartas(baralhoTotal);
-        
-        
-        
+        while (jogo.fimDoJogo(baralhoTotal.size()) == false) {
+            int indice = jogo.cartaAleatoria(baralhoTotal);
+            System.out.println(indice);
+        }
+                
     }
     
-    public ArrayList embaralhaCartas(ArrayList<Carta> cartasEmbaralhadas) {
-        ArrayList<Carta> arrayAux = new ArrayList<>();
+    public int cartaAleatoria(ArrayList<Carta> cartasEmbaralhadas) {
         Random ran = new Random();
-        //TODO: Avaliar como será realizado random, pois não pode se repetir as cartas dentro do array
-        for (int i = 0; i < 32; i++) {    
-            int indiceSorteado = ran.nextInt(cartasEmbaralhadas.size());
-            arrayAux.add(cartasEmbaralhadas.get(indiceSorteado));
-            System.out.println(arrayAux.get(i).nome);            
-        }
-             
-        return cartasEmbaralhadas;
+        int indiceSorteado = ran.nextInt(cartasEmbaralhadas.size());
+        return indiceSorteado;
     }
     
     public void entregaCartas() {
@@ -95,6 +88,14 @@ public class Jogo {
                         
         return monte;
     }  
+    
+    public boolean fimDoJogo (int tamanho) {
+        if (tamanho == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }
 
