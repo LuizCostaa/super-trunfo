@@ -5,5 +5,5 @@ public class Jogador {
     Carta card[];
     String nome;
 
-    public void pegaCarta() {}
+    public void recebeCarta() {}
 }

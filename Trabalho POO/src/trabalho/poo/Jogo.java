@@ -2,25 +2,140 @@ package trabalho.poo;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Jogo {  
     
+    Mensagens mensagens = new Mensagens();
+    
+    ArrayList<Carta> baralhoTotal = new ArrayList<>();
+    ArrayList<Carta> maquina = new ArrayList<>();
+    ArrayList<Carta> jogador = new ArrayList<>();
+    
+    
     public static void main(String[] args) {
-        Jogo jogo = new Jogo();       
-        Jogador jogador = new Jogador();
-        Mensagens mensagens = new Mensagens();
+        Jogo jogo = new Jogo();    
+        jogo.iniciaJogo();
+        int rodada = 0;
         
-        //Cria o baralho principal
-        ArrayList<Carta> baralhoTotal = new ArrayList<>();
+        do {
+            rodada++;
+            jogo.rodada(rodada);
+        } while ( jogo.fimDoJogo() != true );
         
-        // chama o metodo que adiciona as cartas ao ArrayList
-        baralhoTotal = jogo.criaBaralho(baralhoTotal);
+    }
+    
+    public void iniciaJogo(){
+        this.baralhoTotal = criaBaralho(baralhoTotal);
+        this.mensagens.escreveCaracteristicas();
+        this.mensagens.printaInstrucoes();
+    }
+    
+    public void rodada(int rodada) {
         
-        while (jogo.fimDoJogo(baralhoTotal.size()) == false) {
-            int indice = jogo.cartaAleatoria(baralhoTotal);
-            System.out.println(indice);
+        int rod = rodada % 2;
+        int prop;
+        int indice1 = this.cartaAleatoria(this.baralhoTotal);
+        Carta objJogador = new Carta(
+            this.baralhoTotal.get(indice1).grupo,
+            this.baralhoTotal.get(indice1).nome,
+            this.baralhoTotal.get(indice1).altura,
+            this.baralhoTotal.get(indice1).comprimento,
+            this.baralhoTotal.get(indice1).peso,
+            this.baralhoTotal.get(indice1).viveuHa,
+            this.baralhoTotal.get(indice1).superTrunfo
+        );
+        this.baralhoTotal.remove(indice1);
+        
+        int indice2 = this.cartaAleatoria(this.baralhoTotal);
+        Carta objMaquina = new Carta(
+            this.baralhoTotal.get(indice1).grupo,
+            this.baralhoTotal.get(indice1).nome,
+            this.baralhoTotal.get(indice1).altura,
+            this.baralhoTotal.get(indice1).comprimento,
+            this.baralhoTotal.get(indice1).peso,
+            this.baralhoTotal.get(indice1).viveuHa,
+            this.baralhoTotal.get(indice1).superTrunfo
+        );
+        this.baralhoTotal.remove(indice2);
+        
+        if (rod == 0) {
+           prop = this.escolhePropriedade(0);
+        } else {
+            prop = this.escolhePropriedade(1);
         }
+        
+        this.comparaCartas(prop, objJogador, objMaquina);
+        
+    }
+    
+    public void comparaCartas(int prop, Carta obj1, Carta obj2) {
+                        
+        if (prop == 1) {
+            if (obj1.altura > obj2.altura){
                 
+            }
+        } else if (prop == 2) {
+            
+        } else if (prop == 3) {
+
+        } else if (prop == 4 ) {
+            
+        } else {
+            System.out.println("Propriedade indefinida");
+        }
+    }
+    
+    public void cartasToJogador(Carta obj1, Carta obj2, int quem) { // 1: Jogador, 2: Maquina
+        
+        if (quem == 1) {
+            this.jogador.add(new Carta(
+                    obj1.grupo, obj1.nome,
+                    obj1.altura, obj1.comprimento,
+                    obj1.peso, obj1.viveuHa,
+                    obj1.superTrunfo
+                )   
+            );
+            this.jogador.add(new Carta(
+                    obj2.grupo, obj2.nome,
+                    obj2.altura, obj2.comprimento,
+                    obj2.peso, obj2.viveuHa,
+                    obj2.superTrunfo
+                )
+            );
+        } else if (quem == 2){
+            this.maquina.add(new Carta(
+                    obj1.grupo, obj1.nome,
+                    obj1.altura, obj1.comprimento,
+                    obj1.peso, obj1.viveuHa,
+                    obj1.superTrunfo
+                )   
+            );
+            this.maquina.add(new Carta(
+                    obj2.grupo, obj2.nome,
+                    obj2.altura, obj2.comprimento,
+                    obj2.peso,  obj2.viveuHa,
+                    obj2.superTrunfo
+                )
+            );
+        }
+        
+    }
+    
+    public int escolhePropriedade(int vez) {
+        Random ran = new Random();
+        Scanner ler = new Scanner(System.in);
+        int prop = 0;
+        
+        if (vez == 0){
+            prop = ran.nextInt(4);
+        } else if (vez != 0){
+            System.out.println("Digite o nome da propriedade para comparação conforme a tabela:");
+            System.out.println("[1]: Altura \n[2]: Comprimento \n[3]: Peso \n[4]: Viveu há \n");
+            prop = ler.nextInt();
+        }
+        
+        return prop;
     }
     
     public int cartaAleatoria(ArrayList<Carta> cartasEmbaralhadas) {
@@ -29,26 +144,6 @@ public class Jogo {
         return indiceSorteado;
     }
     
-    public void entregaCartas() {
-        
-    }
-    
-    public Carta removeCartaOponente(int indice, Carta carta) {
-    
-        return carta;
-    }
- 
-    public Carta recebeCarta(Carta carta) {
-        
-        return carta;
-    }
-    
-    
-    public Carta comparaCartas(Carta carta1,int indice1, Carta carta2, int indice2) {
-        
-
-        return carta1;
-    }
         
     public ArrayList criaBaralho(ArrayList<Carta> monte) {
         
@@ -89,8 +184,12 @@ public class Jogo {
         return monte;
     }  
     
-    public boolean fimDoJogo (int tamanho) {
-        if (tamanho == 0) {
+    public boolean fimDoJogo () {
+        if (this.jogador.size() == 0) {
+            System.out.println("A máquina venceu o jogo");
+            return true;
+        } else if (this.maquina.size() == 0) {
+            System.out.println("O jogador venceu o jogo");
             return true;
         } else {
             return false;
