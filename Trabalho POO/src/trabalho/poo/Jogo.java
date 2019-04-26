@@ -1,5 +1,12 @@
 package trabalho.poo;
 
+
+/*
+*   @Autores    Luiz Guilherme
+*               Giovana Niehues
+*
+*/
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
